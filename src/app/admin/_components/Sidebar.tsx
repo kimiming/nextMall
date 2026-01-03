@@ -46,6 +46,12 @@ const Sidebar = () => {
             roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
         },
         {
+            title: '全站数据',
+            url: '/admin/statistics',
+            icon: FiHome,
+            roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
+        },
+        {
             title: 'banner管理',
             url: '/admin/banner',
             icon: FiBookOpen,

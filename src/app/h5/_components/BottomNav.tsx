@@ -9,13 +9,15 @@ import {
     FiShoppingCart,
     FiUser,
 } from 'react-icons/fi';
+import { AiFillShopping, AiFillMessage } from 'react-icons/ai';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const navs = [
-    { href: '/h5', label: '首页', icon: FiHome },
-    { href: '/h5/category', label: '分类', icon: FiGrid },
-    { href: '/h5/video', label: '视频', icon: FiVideo },
-    { href: '/h5/cart', label: '购物车', icon: FiShoppingCart },
-    { href: '/h5/me', label: '我的', icon: FiUser },
+    { href: '/h5', label: 'home', icon: FiHome },
+    { href: '/h5/category', label: 'category', icon: FiGrid },
+    { href: '/h5/luxify', label: 'luxify', icon: AiFillShopping },
+    { href: '/h5/about', label: 'about', icon: AiFillMessage },
+    { href: '/h5/me', label: 'contact', icon: FaWhatsapp },
 ];
 
 export default function BottomNav() {
@@ -46,12 +48,12 @@ export default function BottomNav() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            color: active ? '#f00' : '#333',
+                            color: active ? '#2da884' : '#333',
                             textDecoration: 'none',
                             fontSize: 12,
                         }}
                     >
-                        <Icon size={28} color={active ? '#f00' : '#333'} />
+                        <Icon size={28} color={active ? '#2da884' : '#333'} />
                         <span style={{ marginTop: 4 }}>{label}</span>
                     </Link>
                 );

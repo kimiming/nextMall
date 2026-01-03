@@ -4,6 +4,7 @@ import { FaMapMarkerAlt, FaTiktok, FaInstagramSquare } from 'react-icons/fa';
 import { FaSquareXTwitter } from 'react-icons/fa6';
 
 import ContactMe from './_components/ContanctMe';
+import Products from './_components/Products';
 import { ImWhatsapp } from 'react-icons/im';
 import { MdEmail } from 'react-icons/md';
 import { IoMdChatboxes } from 'react-icons/io';
@@ -22,15 +23,24 @@ export default function PCHome() {
                 style={{
                     display: 'flex',
                     justifyContent: 'center',
+                    // backgroundColor: '#2da884',
                     backgroundColor: '#2da884',
+                    height: '60px',
+                    alignItems: 'center',
                 }}
             >
-                <Image src="/Luxify-logo.png" alt="logo" h="60px" />
+                <Image
+                    src="/Luxifylogo.png"
+                    alt="logo"
+                    h="40px"
+                    filter="brightness(0) invert(1)  drop-shadow(0 0 0 green)"
+                />
             </div>
             <div
                 className="nav"
                 style={{
                     width: '100%',
+
                     padding: '0 40px',
                     backgroundColor: '#e4f4ef',
                 }}
@@ -298,9 +308,7 @@ export default function PCHome() {
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="products">
-                        <div className="home-title">
-                            Please click on the WhatsApp below to inquire.
-                        </div>
+                        <Products />
                     </Tabs.Content>
                     <Tabs.Content value="contact">
                         <div

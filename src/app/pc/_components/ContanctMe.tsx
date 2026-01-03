@@ -62,7 +62,7 @@ export default function ContactMe() {
                                     onMouseLeave={() => setIsHover(false)}
                                 >
                                     <Image
-                                        src="D_定制0-1024x977.jpg"
+                                        src="about1.jpg"
                                         boxSize="150px"
                                         borderRadius="full"
                                         fit="cover"

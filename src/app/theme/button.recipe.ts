@@ -6,7 +6,7 @@ export const buttonRecipe = defineRecipe({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        colorPalette: 'red',
+        colorPalette: '#2da884',
         // bg: "#ff0000",      // 使用主题色
         // color: "white",     // 文字颜色
     },

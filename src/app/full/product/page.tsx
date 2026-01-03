@@ -145,9 +145,9 @@ export default function ProductPage() {
                         fontSize="2xl"
                         mr={2}
                     >
-                        ￥{priceRange}
+                        ${priceRange}
                     </Text>
-                    <Text color="gray.500">已售 {product?.sales ?? 0}</Text>
+                    {/* <Text color="gray.500">已售 {product?.sales ?? 0}</Text> */}
                 </Flex>
                 <Text fontWeight="semibold" fontSize="lg" mb={2}>
                     {title}
@@ -158,7 +158,7 @@ export default function ProductPage() {
                     open={isDrawerOpen}
                     onOpenChange={(e) => setIsDrawerOpen(e.open)}
                 >
-                    <Drawer.Trigger asChild>
+                    {/* <Drawer.Trigger asChild>
                         <Flex
                             align="center"
                             justify="space-between"
@@ -174,7 +174,7 @@ export default function ProductPage() {
                             </Flex>
                             <FiChevronRight />
                         </Flex>
-                    </Drawer.Trigger>
+                    </Drawer.Trigger> */}
                     <Portal>
                         <Drawer.Backdrop />
                         <Drawer.Positioner>
@@ -323,7 +323,7 @@ export default function ProductPage() {
                     </Portal>
                 </Drawer.Root>
 
-                <Text color="gray.400" fontSize="sm" mt={1}>
+                {/* <Text color="gray.400" fontSize="sm" mt={1}>
                     共{product?.specs.length ?? 0}种可选
                 </Text>
                 <Box h="1px" bg="gray.100" my={2} />
@@ -338,13 +338,13 @@ export default function ProductPage() {
                     <Text color="red.500">
                         ￥{product?.logiPrice ?? '快递配送'}
                     </Text>
-                </Flex>
+                </Flex> */}
             </Box>
-            <Box pt={2} mb="64px">
+            <Box pt={4} mb="64px" px={6}>
                 {product?.description}
             </Box>
             {/* 底部操作栏 */}
-            <Flex
+            {/* <Flex
                 position="fixed"
                 left={0}
                 bottom={0}
@@ -396,7 +396,7 @@ export default function ProductPage() {
                 >
                     立即购买
                 </Button>
-            </Flex>
+            </Flex> */}
             {isLoading && (
                 <Box pos="absolute" inset="0" bg="bg/80">
                     <Center h="full">

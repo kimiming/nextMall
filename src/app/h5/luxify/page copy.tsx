@@ -11,7 +11,6 @@ import {
 } from 'react-icons/ai';
 type FooterItem = {
     icon: React.ReactNode;
-    id: number;
     title: string;
     content: string;
     imageUrl: string;
@@ -22,7 +21,6 @@ export default function Homepage() {
     const footer: FooterItem[] = [
         {
             icon: <AiFillBank size={30} />,
-            id: 1,
             title: 'Source Factory',
             content:
                 'Focusing on China for fifteen years, only for high-end texture',
@@ -30,7 +28,6 @@ export default function Homepage() {
         },
         {
             icon: <AiFillTool size={30} />,
-            id: 2,
             title: 'rigorous selection of materials',
             content:
                 'Support processing customization, specific contact customer service',
@@ -38,7 +35,6 @@ export default function Homepage() {
         },
         {
             icon: <AiFillInsurance size={30} />,
-            id: 3,
             title: '7 days replacement',
             content:
                 '7 days return guarantee, the whole professional after-sales team to follow up, so that you can buy at ease ~!',
@@ -46,7 +42,6 @@ export default function Homepage() {
         },
         {
             icon: <AiFillTruck size={30} />,
-            id: 4,
             title: 'Free shipping',
             content: 'Direct logistics! 3-7 days after order confirmation',
             imageUrl: '/X_细节-1024x878.jpg',
@@ -106,7 +101,7 @@ export default function Homepage() {
             >
                 {footer.map((item, idx) => (
                     <div
-                        key={item.id}
+                        key={idx}
                         style={{
                             width: itemsPerRow === 2 ? '50%' : '100%',
                             boxSizing: 'border-box',
