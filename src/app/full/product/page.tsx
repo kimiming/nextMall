@@ -203,7 +203,7 @@ export default function ProductPage() {
                                                     fontWeight="bold"
                                                     fontSize="xl"
                                                 >
-                                                    ￥{selectedSpec.price}
+                                                    ${selectedSpec.price}
                                                 </Text>
 
                                                 <Flex
