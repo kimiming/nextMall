@@ -48,8 +48,13 @@ export default function PCHome() {
                 <Tabs.Root defaultValue="home" size="lg" textAlign="center">
                     <Tabs.List>
                         <Tabs.Trigger value="home">HOME</Tabs.Trigger>
-                        <Tabs.Trigger value="products">
-                            ALL PRODUCTS
+                        <Tabs.Trigger
+                            value="products"
+                            rel="noopener noreferrer"
+                        >
+                            <a href="https://luxify.cn/en/product-category/all-products/">
+                                ALL PRODUCTS
+                            </a>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="contact">CONTACT US</Tabs.Trigger>
                         <Tabs.Trigger value="about">ABOUT</Tabs.Trigger>
