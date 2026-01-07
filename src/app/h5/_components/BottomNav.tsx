@@ -59,7 +59,7 @@ export default function BottomNav() {
                 ) : label === 'luxify' ? (
                     <a
                         href="https://luxify.cn/en/product-category/all-products/trendy-bags/"
-                        // target="_blank"
+                        target="_blank"
                         rel="noopener noreferrer"
                         style={{
                             display: 'flex',
@@ -76,7 +76,7 @@ export default function BottomNav() {
                 ) : (
                     <a
                         href="https://luxify.cn/en/product-category/all-products/"
-                        // target="_blank"
+                        target="_blank"
                         rel="noopener noreferrer"
                         style={{
                             display: 'flex',
