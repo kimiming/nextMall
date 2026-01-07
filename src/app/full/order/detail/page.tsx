@@ -19,7 +19,6 @@ import { api } from '@/trpc/react';
 import useCustomToast from '@/app/hooks/useCustomToast';
 import Link from 'next/link';
 import { useConfirmDialog } from '@/app/hooks/useConfirmDialog';
-import { Item } from 'node_modules/@chakra-ui/react/dist/types/components/accordion/namespace';
 
 // 订单状态映射
 const ORDER_STATUS_MAP = {
