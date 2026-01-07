@@ -88,7 +88,7 @@ export default function ContactMe() {
                                         }}
                                     >
                                         <a
-                                            href="https://wa.me/+86189339999"
+                                            href="https://wa.me/+8618933999929"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             style={{
