@@ -1,6 +1,6 @@
-'use client';
+// 'use client';
 
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import { Box, Flex, Text, Image, Badge, SimpleGrid } from '@chakra-ui/react';
 import { ImWhatsapp } from 'react-icons/im';
 import {
@@ -18,7 +18,7 @@ type FooterItem = {
 };
 
 export default function Homepage() {
-    const [itemsPerRow, setItemsPerRow] = useState(1);
+    // const [itemsPerRow, setItemsPerRow] = useState(1);
     const footer: FooterItem[] = [
         {
             icon: <AiFillBank size={30} />,
@@ -52,19 +52,19 @@ export default function Homepage() {
             imageUrl: '/X_细节-1024x878.jpg',
         },
     ];
-    useEffect(() => {
-        function handleResize() {
-            // 假设 iPad 宽度大于 768px
-            if (window.innerWidth >= 768) {
-                setItemsPerRow(2); // iPad及以上一行两个
-            } else {
-                setItemsPerRow(1); // 手机一行一个
-            }
-        }
-        handleResize(); // 初始化判断
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    // useEffect(() => {
+    //     function handleResize() {
+    //         // 假设 iPad 宽度大于 768px
+    //         if (window.innerWidth >= 768) {
+    //             setItemsPerRow(2); // iPad及以上一行两个
+    //         } else {
+    //             setItemsPerRow(1); // 手机一行一个
+    //         }
+    //     }
+    //     handleResize(); // 初始化判断
+    //     window.addEventListener('resize', handleResize);
+    //     return () => window.removeEventListener('resize', handleResize);
+    // }, []);
     return (
         <Box minH="100vh" bg="gray.50">
             {/* 居中logo 并且背景颜色是#2da884 */}
@@ -108,7 +108,7 @@ export default function Homepage() {
                     <div
                         key={item.id}
                         style={{
-                            width: itemsPerRow === 2 ? '50%' : '100%',
+                            // width: itemsPerRow === 2 ? '50%' : '100%',
                             boxSizing: 'border-box',
                         }}
                     >

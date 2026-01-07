@@ -46,7 +46,7 @@ export default function Login() {
 
                 // 等待一小段时间确保session更新
                 setTimeout(() => {
-                    router.replace('/');
+                    router.replace('/admin');
                 }, 500);
             }
         } catch (error) {
