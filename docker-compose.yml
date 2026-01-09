@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.3'
 services:
     # PostgreSQL 数据库
     db:
@@ -47,7 +47,7 @@ services:
             - DATABASE_URL=${DATABASE_URL}
             - AUTH_SECRET=${AUTH_SECRET}
             - AUTH_URL=${AUTH_URL}
-            - AUTH_TRUST_HOST=true
+            - AUTH_TRUST_HOST='true'
             - FIRST_SUPERUSER=${FIRST_SUPERUSER}
             - FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD}
             - SMTP_FROM_NAME=${SMTP_FROM_NAME}
