@@ -1,3 +1,4 @@
+version: '3.4'
 services:
     # PostgreSQL 数据库
     db:
@@ -45,20 +46,19 @@ services:
             # 优先使用.env文件中的DATABASE_URL，如果.env中没有则使用默认值
             - DATABASE_URL=${DATABASE_URL}
             - AUTH_SECRET=${AUTH_SECRET}
-            - AUTH_URL=${AUTH_URL:-http://localhost:3000}
+            - AUTH_URL=${AUTH_URL}
             - AUTH_TRUST_HOST=true
-            - FIRST_SUPERUSER=${FIRST_SUPERUSER:-admin}
-            - FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD:-admin}
-            - SMTP_FROM_NAME=${SMTP_FROM_NAME:-nextmall}
+            - FIRST_SUPERUSER=${FIRST_SUPERUSER}
+            - FIRST_SUPERUSER_PASSWORD=${FIRST_SUPERUSER_PASSWORD}
+            - SMTP_FROM_NAME=${SMTP_FROM_NAME}
             - SMTP_HOST=${SMTP_HOST}
             - SMTP_USER=${SMTP_USER}
             - SMTP_PASS=${SMTP_PASS}
             - SMTP_PORT=${SMTP_PORT}
-            - TITLE=${TITLE:-nextmall}
-            - DESCRIPTION=${DESCRIPTION:-nextmall description}
+            - TITLE=${TITLE}
+            - DESCRIPTION=${DESCRIPTION}
         depends_on:
-            db:
-                condition: service_healthy
+            - db
         volumes:
             - output:/app/output
 

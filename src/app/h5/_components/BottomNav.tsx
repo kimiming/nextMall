@@ -38,7 +38,7 @@ export default function BottomNav() {
                 zIndex: 100,
             }}
         >
-            {navs.map(({ href, label, icon: Icon }) => {
+            {/* {navs.map(({ href, label, icon: Icon }) => {
                 const active = pathname === href;
                 return label !== 'luxify' && label !== 'category' ? (
                     <Link
@@ -90,6 +90,27 @@ export default function BottomNav() {
                         <Icon size={28} color={active ? '#2da884' : '#333'} />
                         <span style={{ marginTop: 4 }}>{label}</span>
                     </a>
+                );
+            })} */}
+
+            {navs.map(({ href, label, icon: Icon }) => {
+                const active = pathname === href;
+                return (
+                    <Link
+                        key={href}
+                        href={href}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            color: active ? '#2da884' : '#333',
+                            textDecoration: 'none',
+                            fontSize: 12,
+                        }}
+                    >
+                        <Icon size={28} color={active ? '#2da884' : '#333'} />
+                        <span style={{ marginTop: 4 }}>{label}</span>
+                    </Link>
                 );
             })}
         </nav>

@@ -53,14 +53,13 @@ export default function ContactMe() {
                         <Button
                             colorPalette="green"
                             // variant="subtle"
-                            w={200}
-                            borderRadius={30}
-                            h={12}
+                            w={50}
+                            borderRadius={50}
+                            h={50}
                             color="white"
                             fontSize={18}
                         >
                             <ImWhatsapp size={40} />
-                            Contanct Me
                         </Button>
                     </Popover.Trigger>
                     <Portal>

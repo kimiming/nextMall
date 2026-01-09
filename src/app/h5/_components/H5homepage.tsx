@@ -1,7 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import Link from 'next/link';
-import ContactMe from './_components/ContanctMe';
 import { LuCrown } from 'react-icons/lu'; //皇冠
 import { FaRegBuilding, FaLeaf } from 'react-icons/fa'; //工厂图标 // leaf图标
 import { FaRegStar } from 'react-icons/fa6'; //星星图标
@@ -159,23 +157,6 @@ export default function H5homepage() {
                             </div>
                         </div>
                     </div>
-                    <div className="nav">
-                        <Link href="/pc" className="nav-item">
-                            HOME
-                        </Link>
-                        <Link href="/pc/PrizeActivity" className="nav-item">
-                            PRODUCTS
-                        </Link>
-                        <Link
-                            href="/pc/PrizeActivity"
-                            className="nav-item2 nav-item"
-                        >
-                            PRIZES
-                        </Link>
-                        <Link href="/pc/PrizeActivity" className="nav-item">
-                            ABOUT
-                        </Link>
-                    </div>
                     <div className="lang-switch">
                         {supportedLocales.map((loc) => (
                             <a
@@ -308,10 +289,11 @@ export default function H5homepage() {
                     </div>
                 </section>
             </div>
+
             {/* 联系方式悬浮按钮 */}
-            <div className="wechat">
-                <ContactMe />
-            </div>
+            {/* <div className="wechat">
+                <WhatsApp />
+            </div> */}
         </div>
     );
 }
