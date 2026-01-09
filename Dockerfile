@@ -23,7 +23,9 @@ RUN corepack enable pnpm && pnpm prisma generate
 # 构建应用
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV SKIP_ENV_VALIDATION 1
+ENV NODE_OPTIONS="--max_old_space_size=512"
 RUN pnpm build
+
 
 # 运行阶段
 FROM base AS runner
