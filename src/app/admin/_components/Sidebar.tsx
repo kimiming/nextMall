@@ -46,9 +46,9 @@ const Sidebar = () => {
             roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
         },
         {
-            title: '全站数据',
+            title: '抽奖情况',
             url: '/admin/statistics',
-            icon: FiHome,
+            icon: FiBox,
             roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
         },
         {

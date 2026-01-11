@@ -6,11 +6,12 @@ import {
     ShareAltOutlined,
     GiftOutlined,
 } from '@ant-design/icons';
+import { api } from '@/trpc/react';
 
 const END_TIME = new Date().getTime() + 1000 * 60 * 60 * 24; // 活动结束时间，示例为24小时后
-const PARTICIPANT_COUNT = 1098; // 示例参与人数
 
-const PrizeActivity: React.FC = () => {
+export default function PrizeActivity() {
+    let [phone, setPhone] = useState('18814374742');
     const [code, setCode] = useState('');
     const [prizeVisible, setPrizeVisible] = useState(false);
     const [prize, setPrize] = useState('');
@@ -18,9 +19,12 @@ const PrizeActivity: React.FC = () => {
     const [shareVisible, setShareVisible] = useState(false);
     const [myPrizeVisible, setMyPrizeVisible] = useState(false);
     const [countdown, setCountdown] = useState('');
+    const [PARTICIPANT_COUNT, setPARTICIPANT_COUNT] = useState(0);
+    const { data: prizeList } = api.prize.list.useQuery();
 
     // 倒计时逻辑
     useEffect(() => {
+        setPARTICIPANT_COUNT(prizeList?.data?.length || 0);
         const timer = setInterval(() => {
             const now = new Date().getTime();
             const diff = END_TIME - now;
@@ -40,13 +44,16 @@ const PrizeActivity: React.FC = () => {
     }, []);
 
     const handleSubmit = () => {
-        if (!code) {
-            message.warning('请输入口令');
-            return;
-        }
+        const mutation = api.prize.create.useMutation();
+        mutation.mutate({ phone });
+        console.log('mutation111:', mutation);
+        // if (!code) {
+        //     message.warning('请输入口令');
+        //     return;
+        // }
         // 这里可以加接口请求逻辑
-        setPrize('iPhone12');
-        setPrizeVisible(true);
+        // setPrize('iPhone12');
+        // setPrizeVisible(true);
     };
 
     return (
@@ -277,6 +284,4 @@ const PrizeActivity: React.FC = () => {
             </Modal>
         </div>
     );
-};
-
-export default PrizeActivity;
+}

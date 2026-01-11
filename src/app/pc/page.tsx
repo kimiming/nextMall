@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import ContactMe from './_components/ContanctMe';
+import translations from './utils/translations.js';
 import { LuCrown } from 'react-icons/lu'; //皇冠
 import { FaRegBuilding, FaLeaf } from 'react-icons/fa'; //工厂图标 // leaf图标
 import { FaRegStar } from 'react-icons/fa6'; //星星图标
@@ -16,117 +17,10 @@ import { HiMiniCpuChip } from 'react-icons/hi2'; //CPU图标
 
 import './FactoryPage.css';
 
-// 多语言内容配置
-const translations = {
-    en_US: {
-        name: 'English',
-        factory_title: 'Factory Introduction',
-        hero_badge: 'HIGH-END LUXURY FACTORY',
-        hero_subtitle:
-            'Focused on 1:1 replicas and bespoke pieces, delivering enterprise-grade luxury with meticulous craftsmanship.',
-        metric_bespoke: 'Bespoke',
-        metric_bespoke_desc: 'One-to-one personalization',
-        metric_patented: 'Patented',
-        metric_patented_desc: 'Multiple core techniques certified',
-        metric_qc: 'QC',
-        metric_qc_desc: 'Rigorous outbound inspection',
-        accent_tag: 'ENTERPRISE-GRADE MANUFACTURING',
-        accent_main:
-            'Enterprise-grade standards, data-driven control and a global vision deliver scalable, luxury-grade solutions for discerning clients worldwide.',
-        accent_chip1: 'Lean Production',
-        accent_chip2: 'Smart Manufacturing',
-        accent_chip3: 'Sustainability',
-        info_block1_tag: 'Factory Introduction · Bespoke',
-        info_block1_text: `Factory Introduction: Welcome to our production site for high-end luxury goods. We are a manufacturer of 1:1 replicas of leading luxury brands, following the core philosophy of "precise craftsmanship, outstanding quality, and bespoke customization". Through careful selection of top-quality raw materials and the perfect combination of craftsmanship and advanced technology, our products are created. Our bespoke designs are crafted by designers with great artistic competence and extensive intercultural experience, enabling them to create unique masterpieces tailored to the tastes and requirements of our clients. With perfected manufacturing processes and strict quality control, we combine innovation and environmental awareness, so that luxury and responsibility go hand in hand.`,
-        info_block2_tag: 'Worldwide Patents · Product Introduction',
-        info_block2_text: `Our self-developed technologies and production processes are patented worldwide and set us apart from competitors. We are committed to providing discerning customers around the world with unparalleled luxury products. Our factory employs some of the best designers and craftsmen in the world, supported by state-of-the-art production facilities to perfect every single luxury product. Global vision, international certifications.
-Product Introduction: Our factory specializes in 1:1 replicas of various high-end luxury goods as well as private customizations, offering a unique luxury experience that perfectly reinterprets classic designs.
-Finest craftsmanship, distinctive masterpieces. We combine traditional handwork with modern, intelligent manufacturing technology.
-The highest quality materials for a luxurious tactile experience. We select top-quality leather, metal fittings, and natural gemstones worldwide to ensure that each product is of impeccable quality—and you experience the same luxury as with the original brands.`,
-        gallery_title: 'Factory & Craftsmanship Presentation',
-        image_alts: [
-            'Panoramic view of the high-end luxury goods production line',
-            'Craftsman at precise handwork',
-            'Selection and inspection of top-quality raw materials',
-            'Designer working on a bespoke piece',
-            'Modern intelligent manufacturing and automated facilities',
-            'Quality inspection and presentation of finished luxury products',
-        ],
-        contact_title: 'Contact',
-        contact_desc: 'Contact us for bespoke consultation and offers.',
-        contact_links: [
-            { label: 'WeChat', url: 'weixin://', icon: 'ri-wechat-fill' },
-            {
-                label: 'WhatsApp',
-                url: 'https://wa.me/123456789',
-                icon: 'ri-whatsapp-fill',
-            },
-            {
-                label: 'E-Mail',
-                url: 'mailto:info@luxfactory.com',
-                icon: 'ri-mail-fill',
-            },
-        ],
-    },
-    de_DE: {
-        name: 'Deutsch',
-        factory_title: 'Fabrikvorstellung',
-        hero_badge: 'High-end Luxusfabrik',
-        hero_subtitle:
-            'Fokus auf 1:1 Repliken und Maßanfertigungen, mit höchster Handwerkskunst.',
-        metric_bespoke: 'Bespoke',
-        metric_bespoke_desc: 'Individuelle Maßanfertigung',
-        metric_patented: 'Patented',
-        metric_patented_desc: 'Weltweite Patente',
-        metric_qc: 'QC',
-        metric_qc_desc: 'Strenge Qualitätskontrolle',
-        accent_tag: 'ENTERPRISE-GRADE MANUFACTURING',
-        accent_main:
-            'Enterprise-grade Standards, datengetriebene Kontrolle und globale Vision für skalierbare Luxuslösungen.',
-        accent_chip1: 'Lean Production',
-        accent_chip2: 'Smart Manufacturing',
-        accent_chip3: 'Nachhaltigkeit',
-        info_block1_tag: 'Fabrikvorstellung · Maßanfertigung',
-        info_block1_text: `Vorstellung der Fabrik: Willkommen in unserer Produktionsstätte für hochwertige Luxusgüter. Wir sind ein Hersteller von 1:1-Repliken führender Luxusmarken und folgen der Kernphilosophie „präzise Handwerkskunst, herausragende Qualität und individuelle Maßanfertigung“. Durch die sorgfältige Auswahl erstklassiger Rohmaterialien und die perfekte Verbindung von Handwerk und modernster Technologie entstehen unsere Produkte. Unsere maßgeschneiderten Designs werden von Designern mit großer künstlerischer Kompetenz und umfangreicher interkultureller Erfahrung geschaffen, sodass sie einzigartige Meisterstücke ganz nach dem Geschmack und den Anforderungen der Kunden gestalten können. Mit perfektionierten Fertigungsprozessen und strenger Qualitätskontrolle verbinden wir Innovation und Umweltbewusstsein, sodass Luxus und Verantwortung Hand in Hand gehen.`,
-        info_block2_tag: 'Weltweite Patente · Produktvorstellung',
-        info_block2_text: `Unsere eigens entwickelten Technologien und Produktionsverfahren sind weltweit patentiert und heben uns deutlich von Mitbewerbern ab. Wir haben es uns zur Aufgabe gemacht, anspruchsvollen Kunden auf der ganzen Welt unvergleichliche Luxusprodukte zu bieten. In unserer Fabrik arbeiten einige der besten Designer und Handwerker der Welt, unterstützt von hochmodernen Produktionsanlagen, um jedes einzelne Luxusprodukt bis zur Perfektion zu fertigen. Globaler Weitblick, internationale Zertifizierungen.
-Produktvorstellung: Unsere Fabrik ist auf 1:1-Repliken verschiedenster hochwertiger Luxusgüter sowie auf private Sonderanfertigungen spezialisiert und bietet ein einzigartiges Luxuserlebnis, das klassische Designs perfekt neu interpretiert.
-Feinste Handwerkskunst, unverwechselbare Meisterwerke. Wir verbinden traditionelle Handarbeit mit moderner, intelligenter Fertigungstechnologie.
-Hochwertigste Materialien für ein luxuriöses haptisches Erlebnis. Wir wählen weltweit erstklassige Leder, Metallbeschläge und natürliche Edelsteine aus, um sicherzustellen, dass jedes einzelne Produkt von makelloser Qualität ist – und Sie denselben luxuriösen Anspruch erleben wie bei den Originalmarken.`,
-        gallery_title: 'Fabrik- und Handwerkspräsentation',
-        image_alts: [
-            'Panoramablick auf die Produktionslinie für hochwertige Luxusgüter',
-            'Handwerker bei präziser Handarbeit',
-            'Auswahl und Prüfung erstklassiger Rohmaterialien',
-            'Designer bei der Arbeit an einer individuellen Maßanfertigung',
-            'Moderne intelligente Fertigung und automatisierte Anlagen',
-            'Qualitätsprüfung und Präsentation der fertigen Luxusprodukte',
-        ],
-        contact_title: 'Kontakt',
-        contact_desc:
-            'Kontaktieren Sie uns für individuelle Beratung und Angebote.',
-        contact_links: [
-            { label: 'WeChat', url: 'weixin://', icon: 'ri-wechat-fill' },
-            {
-                label: 'WhatsApp',
-                url: 'https://wa.me/123456789',
-                icon: 'ri-whatsapp-fill',
-            },
-            {
-                label: 'E-Mail',
-                url: 'mailto:info@luxfactory.com',
-                icon: 'ri-mail-fill',
-            },
-        ],
-    },
-    // 你可以继续添加 zh_CN、fr_FR 等其它语言
-};
-
 const supportedLocales = [
     { code: 'en_US', label: 'English' },
     { code: 'de_DE', label: 'Deutsch' },
-    // { code: 'zh_CN', label: '中文' },
-    // ...
+    { code: 'zh_CN', label: '中文' },
 ];
 
 const imagePaths = [
@@ -140,7 +34,6 @@ const imagePaths = [
 
 export default function H5homepage() {
     const [locale, setLocale] = useState('en_US');
-    const [contactOpen, setContactOpen] = useState(false);
 
     const t = translations[locale];
 
@@ -163,7 +56,7 @@ export default function H5homepage() {
                         <Link href="/pc" className="nav-item">
                             HOME
                         </Link>
-                        <Link href="/pc/PrizeActivity" className="nav-item">
+                        <Link href="/pc/Products" className="nav-item">
                             PRODUCTS
                         </Link>
                         <Link

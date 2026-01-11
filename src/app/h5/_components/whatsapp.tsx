@@ -109,7 +109,7 @@ export default function ContactMe() {
                                             }
                                         >
                                             <Image
-                                                src="about1.jpg"
+                                                src="/about1.jpg"
                                                 boxSize="150px"
                                                 borderRadius="full"
                                                 fit="cover"

@@ -8,20 +8,10 @@ import { api } from '@/trpc/react';
 import Link from 'next/link';
 import { ContentLoading } from '@/app/_components/LoadingSpinner';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import { log } from 'console';
 
 export default function H5Home() {
-    // 瀑布流相关状态
-    const PAGE_SIZE = 6;
-    const [products, setProducts] = useState<any[]>([]);
-    const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
-    const [loading, setLoading] = useState(false);
-    // 用于缓存已加载的所有产品（不是阻止请求，而是合并和去重）
-    const productCacheRef = useRef<{ [key: number]: any[] }>({});
-    const containerRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
+    // 获取 isActive 的 banners
     const { data: bannerResponse, isLoading: bannersLoading } =
         api.banner.list.useQuery({ isActive: true, orderBy: 'sort' });
     const banners = bannerResponse?.data ?? [];
@@ -35,44 +25,16 @@ export default function H5Home() {
         });
     const category = categoryResponse?.data ?? [];
 
-    const { data: productResponse, isLoading: productLoading } =
+    const { data: productResponse, isLoading: productsLoading } =
         api.product.list.useQuery({
             orderBy: 'sales',
-            page,
-            pageSize: PAGE_SIZE,
         });
+    const products = productResponse?.data ?? [];
+    console.log('products Data:', products);
 
-    // 每次 productResponse 或 page 变化时合并数据
-    useEffect(() => {
-        if (!productResponse?.data) return;
-        // 缓存当前页数据
-        productCacheRef.current[page] = productResponse.data;
-        // 合并所有缓存页的数据（去重）
-        const allProducts = Object.values(productCacheRef.current).flat();
-        setProducts(allProducts);
-        // 判断是否还有更多
-        setHasMore(productResponse.data.length === PAGE_SIZE);
-        setLoading(false);
-    }, [productResponse, page]);
+    const isLoading = bannersLoading || categoryLoading || productsLoading;
 
-    // 监听滚动到底部
-    useEffect(() => {
-        const handleScroll = () => {
-            if (!containerRef.current || loading || !hasMore) return;
-            const { scrollTop, scrollHeight, clientHeight } =
-                containerRef.current;
-            if (scrollHeight - scrollTop <= clientHeight + 100) {
-                setLoading(true);
-                setPage((prev) => prev + 1);
-            }
-        };
-        const ref = containerRef.current;
-        ref?.addEventListener('scroll', handleScroll);
-        return () => ref?.removeEventListener('scroll', handleScroll);
-    }, [loading, hasMore, page]);
-
-    const isLoading = productLoading;
-    if (isLoading && page === 1) {
+    if (isLoading) {
         return <ContentLoading text="Loading..." />;
     }
 
@@ -84,7 +46,6 @@ export default function H5Home() {
                 background:
                     'linear-gradient(to bottom,#2da884, #f4f4f4 50%, #f4f4f4 100%)',
             }}
-            ref={containerRef}
         >
             {/* Search Bar */}
             <Box px={4} pt={4} w="100%">
@@ -240,16 +201,6 @@ export default function H5Home() {
                         </Link>
                     ))}
                 </SimpleGrid>
-                {loading && (
-                    <Box textAlign="center" py={2}>
-                        加载中...
-                    </Box>
-                )}
-                {!hasMore && (
-                    <Box textAlign="center" py={2} color="gray.400">
-                        没有更多了
-                    </Box>
-                )}
             </Box>
         </Box>
     );

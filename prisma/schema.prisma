@@ -85,6 +85,41 @@ model User {
     courseFavorites CourseFavorite[] // 用户收藏课程（新表）
     operationLogs OperationLog[] // 用户操作日志
 }
+model Lottery  {
+  id        String   @id @default(cuid()) // 主键
+  phone     String   @unique              // 手机号，唯一
+  secret    String   @unique              // 口令，唯一
+  status    Int      @default(0)          // 抽奖状态 0未抽奖 1已抽奖
+  isWinner  Boolean  @default(false)      // 是否中奖
+  prize     Prize?   @relation(fields: [prizeId], references: [id])
+  prizeId   String?  // 奖品ID
+  activity  Activity @relation(fields: [activityId], references: [id])
+  activityId String  // 活动ID
+  drawAt    DateTime?                      // 抽奖时间
+  winAt     DateTime?                      // 中奖时间
+  createdAt DateTime @default(now())       // 创建时间
+}
+model Activity {
+  id        String   @id @default(cuid()) // 活动ID
+  name      String   // 活动名称
+  image     String?  // 活动海报
+  text      String?  // 活动内容 
+  startAt   DateTime // 活动开始时间
+  endAt     DateTime // 活动结束时间
+  prizes    Prize[]  // 活动下的奖品
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Prize {
+  id         String   @id @default(cuid()) // 奖品ID
+  name       String   // 奖品名称
+  image      String?  // 奖品图片
+  description String? // 奖品描述
+  activity   Activity @relation(fields: [activityId], references: [id]) // 所属活动
+  activityId String    // 活动ID，外键
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
 
 enum UserRole {
     SUPERADMIN // 超级管理员

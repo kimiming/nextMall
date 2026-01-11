@@ -8,6 +8,7 @@ import {
     FiVideo,
     FiShoppingCart,
     FiUser,
+    FiGift,
 } from 'react-icons/fi';
 import { AiFillShopping, AiFillMessage } from 'react-icons/ai';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -16,7 +17,7 @@ const navs = [
     { href: '/h5', label: 'home', icon: FiHome },
     { href: '/h5/category', label: 'category', icon: FiGrid },
     { href: '/h5/luxify', label: 'luxify', icon: AiFillShopping },
-    { href: '/h5/about', label: 'about', icon: AiFillMessage },
+    { href: '/h5/prize', label: 'prize', icon: FiGift },
     { href: '/h5/me', label: 'contact', icon: FaWhatsapp },
 ];
 
