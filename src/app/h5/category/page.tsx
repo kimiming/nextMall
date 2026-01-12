@@ -42,7 +42,7 @@ export default function CategoryPage() {
     const products = productResponse?.data ?? [];
 
     if (categoriesLoading) {
-        return <ContentLoading text="分类加载中..." />;
+        return <ContentLoading text="loading..." />;
     }
 
     return (
@@ -56,7 +56,7 @@ export default function CategoryPage() {
                 >
                     <Input
                         size="sm"
-                        placeholder="搜索"
+                        placeholder="Search"
                         variant="outline"
                         bg="white"
                         borderRadius="full"
@@ -110,7 +110,7 @@ export default function CategoryPage() {
                 {/* 右侧内容区 */}
                 <Box flex={1} h="100%" overflowY="auto" p={4} minW={0}>
                     <Text fontSize="md" fontWeight="bold" mb={4}>
-                        {activeCategory ? activeCategory.name : ''}分类
+                        {activeCategory ? activeCategory.name : ''}-Series
                     </Text>
                     <Flex wrap="wrap" gap={3}>
                         <ProductItem products={products} />

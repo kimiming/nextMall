@@ -13,7 +13,7 @@ import { log } from 'console';
 
 export default function H5Home() {
     // 瀑布流相关状态
-    const PAGE_SIZE = 6;
+    const PAGE_SIZE = 7;
     const [products, setProducts] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
@@ -42,6 +42,7 @@ export default function H5Home() {
             pageSize: PAGE_SIZE,
         });
 
+    console.log('products Data:', productResponse);
     // 每次 productResponse 或 page 变化时合并数据
     useEffect(() => {
         if (!productResponse?.data) return;
@@ -70,6 +71,25 @@ export default function H5Home() {
         ref?.addEventListener('scroll', handleScroll);
         return () => ref?.removeEventListener('scroll', handleScroll);
     }, [loading, hasMore, page]);
+
+    // 新增：首次加载时自动补充内容，填满容器
+    useEffect(() => {
+        // 只有第一页且有更多数据时才自动补充
+        if (
+            page === 1 &&
+            hasMore &&
+            !loading &&
+            containerRef.current &&
+            products.length > 0
+        ) {
+            const ref = containerRef.current;
+            // 如果内容高度小于容器高度，且还有更多数据，则自动加载下一页
+            if (ref.scrollHeight <= ref.clientHeight + 10) {
+                setLoading(true);
+                setPage((prev) => prev + 1);
+            }
+        }
+    }, [products, hasMore, loading, page]);
 
     const isLoading = productLoading;
     if (isLoading && page === 1) {
@@ -224,7 +244,7 @@ export default function H5Home() {
                                             color="red.400"
                                             verticalAlign="baseline"
                                         >
-                                            ￥
+                                            $
                                         </Text>
                                         {item.specs[0]?.price.toFixed(2)}
                                     </Text>
@@ -233,7 +253,7 @@ export default function H5Home() {
                                         fontWeight="normal"
                                         color="gray.500"
                                     >
-                                        已售{item.sales}件
+                                        {/* 已售{item.sales}件 */}
                                     </Text>
                                 </Flex>
                             </Box>
@@ -242,12 +262,12 @@ export default function H5Home() {
                 </SimpleGrid>
                 {loading && (
                     <Box textAlign="center" py={2}>
-                        加载中...
+                        loading...
                     </Box>
                 )}
                 {!hasMore && (
                     <Box textAlign="center" py={2} color="gray.400">
-                        没有更多了
+                        no more
                     </Box>
                 )}
             </Box>

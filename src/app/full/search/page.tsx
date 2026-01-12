@@ -99,7 +99,7 @@ export default function SearchPage() {
                     >
                         <Input
                             size="sm"
-                            placeholder="搜索商品"
+                            placeholder="Search"
                             variant="outline"
                             bg="gray.100"
                             borderRadius="full"
@@ -120,7 +120,7 @@ export default function SearchPage() {
                         onClick={handleSearch}
                         fontWeight="medium"
                     >
-                        搜索
+                        Search
                     </Text>
                 </Flex>
             </Box>
@@ -140,7 +140,7 @@ export default function SearchPage() {
                     <ProductList
                         products={products}
                         isLoading={productsLoading}
-                        emptyText="暂无更多数据"
+                        emptyText="no more history"
                     />
                 </Box>
             ) : (
@@ -152,7 +152,7 @@ export default function SearchPage() {
                             fontWeight="medium"
                             color="gray.700"
                         >
-                            历史搜索
+                            History
                         </Text>
                         {searchHistory.length > 0 && (
                             <FiTrash2
@@ -185,7 +185,7 @@ export default function SearchPage() {
                         </Flex>
                     ) : (
                         <Text color="gray.400" textAlign="center" py={8}>
-                            暂无搜索历史~
+                            no more history
                         </Text>
                     )}
                 </Box>

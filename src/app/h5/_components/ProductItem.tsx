@@ -70,7 +70,7 @@ export default function ProductItem({
                                         fontSize="xs"
                                         textAlign="left"
                                     >
-                                        已售{item.sales}件
+                                        {/* 已售{item.sales}件 */}
                                     </Text>
                                     {isShowDelete && (
                                         <Button

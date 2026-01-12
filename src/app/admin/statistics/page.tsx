@@ -13,8 +13,6 @@ import {
     Select,
 } from 'antd';
 import { api } from '@/trpc/react';
-import { log } from 'console';
-import { visitLexicalEnvironment } from 'typescript';
 
 export default function Statistics() {
     const [phone, setPhone] = useState('');
@@ -57,10 +55,7 @@ export default function Statistics() {
 
     const prizeSeries = [
         { value: '', label: '' },
-        { value: 'lv', label: 'lv' },
-        { value: 'gold', label: '金币' },
-        { value: 'diamond', label: '钻石' },
-        { value: 'ticket', label: '奖券' },
+        { value: 'ticket', label: '20% Off Coupon as a Prize' },
     ];
 
     // 表格参数
@@ -217,10 +212,9 @@ export default function Statistics() {
         setIsModalOpen(false);
     };
 
-    //删除用户
+    //删除按钮
     const handleUserDelete = (value) => {
-        setUserId(value);
-        console.log('userId:', userId);
+        setUserId(value?.id);
         showModal();
     };
 

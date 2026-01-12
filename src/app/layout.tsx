@@ -4,7 +4,7 @@ import { type Metadata } from 'next';
 import { Provider } from './provider';
 import { TRPCReactProvider } from '@/trpc/react';
 
-const SITE_URL = process.env.NEXTAUTH_URL || 'https://luxify.cn';
+const SITE_URL = process.env.NEXTAUTH_URL || 'https://luxify.cc';
 const SITE_NAME = 'Luxify';
 const DEFAULT_TITLE = process.env.TITLE || 'Luxify';
 const DEFAULT_DESCRIPTION =

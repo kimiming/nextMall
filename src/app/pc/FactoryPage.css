@@ -27,7 +27,7 @@ button {
     --border-muted: #e5e7eb;
 }
 html {
-    scroll-behavior: smooth;
+    data-scroll-behavior: smooth;
 }
 * {
     box-sizing: border-box;

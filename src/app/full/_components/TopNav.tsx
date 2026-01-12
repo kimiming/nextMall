@@ -3,7 +3,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 import { Text, IconButton, Flex } from '@chakra-ui/react';
 
 export default function TopNav({
-    title = '收货地址',
+    title = '',
     onBack,
 }: {
     title?: string;

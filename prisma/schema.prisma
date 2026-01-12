@@ -85,16 +85,22 @@ model User {
     courseFavorites CourseFavorite[] // 用户收藏课程（新表）
     operationLogs OperationLog[] // 用户操作日志
 }
+model VisitLog {
+  id        String   @id @default(cuid()) // 日志ID
+  userId    String?  // 用户ID（可选，未登录时为空）
+  ipAddress String   // 用户IP
+  url       String   // 访问页面URL
+  referrer  String?  // 来源页面
+  userAgent String?  // 浏览器UA
+  createdAt DateTime @default(now()) // 访问时间
+}
 model Lottery  {
   id        String   @id @default(cuid()) // 主键
   phone     String   @unique              // 手机号，唯一
   secret    String   @unique              // 口令，唯一
   status    Int      @default(0)          // 抽奖状态 0未抽奖 1已抽奖
   isWinner  Boolean  @default(false)      // 是否中奖
-  prize     Prize?   @relation(fields: [prizeId], references: [id])
-  prizeId   String?  // 奖品ID
-  activity  Activity @relation(fields: [activityId], references: [id])
-  activityId String  // 活动ID
+  prize     String?   
   drawAt    DateTime?                      // 抽奖时间
   winAt     DateTime?                      // 中奖时间
   createdAt DateTime @default(now())       // 创建时间

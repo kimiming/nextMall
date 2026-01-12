@@ -398,7 +398,16 @@ export default function ProductPage() {
                 </Button>
             </Flex> */}
             {isLoading && (
-                <Box pos="absolute" inset="0" bg="bg/80">
+                <Box
+                    pos="absolute"
+                    inset="0"
+                    bg="bg/80"
+                    bgColor="#fff"
+                    style={{
+                        backdropFilter: 'blur(8px)', // 高斯模糊
+                        WebkitBackdropFilter: 'blur(8px)', // 兼容部分浏览器
+                    }}
+                >
                     <Center h="full">
                         <Spinner
                             color="red.500"

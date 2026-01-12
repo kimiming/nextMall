@@ -129,7 +129,7 @@ export default function Products() {
                                             fontWeight="normal"
                                             color="gray.500"
                                         >
-                                            已售{item.sales}件
+                                            {/* 已售{item.sales}件 */}
                                         </Text>
                                     </Flex>
                                 </Box>

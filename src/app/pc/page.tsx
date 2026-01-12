@@ -53,21 +53,12 @@ export default function H5homepage() {
                         </div>
                     </div>
                     <div className="nav">
-                        <Link href="/pc" className="nav-item">
-                            HOME
-                        </Link>
-                        <Link href="/pc/Products" className="nav-item">
-                            PRODUCTS
-                        </Link>
-                        <Link
-                            href="/pc/PrizeActivity"
-                            className="nav-item2 nav-item"
-                        >
-                            PRIZES
-                        </Link>
-                        <Link href="/pc/PrizeActivity" className="nav-item">
-                            ABOUT
-                        </Link>
+                        <div className="nav-item">
+                            {' '}
+                            <a href="https://luxify.cn/en/product-category/all-products/trendy-bags/">
+                                PRODUCTS
+                            </a>
+                        </div>
                     </div>
                     <div className="lang-switch">
                         {supportedLocales.map((loc) => (

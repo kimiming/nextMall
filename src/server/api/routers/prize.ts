@@ -26,7 +26,7 @@ export const lotteryRouter = createTRPCRouter({
             if (exists) {
                 throw new TRPCError({
                     code: 'CONFLICT',
-                    message: '手机号已生成过秘钥',
+                    message: 'This phone number has already generated a key.',
                 });
             }
             const secret = generateSecretKey(input.phone);
@@ -113,12 +113,16 @@ export const lotteryRouter = createTRPCRouter({
                 where: { secret: input.secret },
             });
             if (!record) {
-                throw new TRPCError({ code: 'NOT_FOUND', message: '秘钥无效' });
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message: 'Invalid secret key.',
+                });
             }
             if (record.status === 1) {
                 throw new TRPCError({
                     code: 'CONFLICT',
-                    message: '该秘钥已参与过抽奖',
+                    message:
+                        'This secret key has already participated in the lottery.',
                 });
             }
             // 这里可以加中奖逻辑，比如随机
