@@ -369,13 +369,16 @@ export default function PrizeActivity() {
                 <div>
                     <h3>Prize Details</h3>
                     <div style={{ marginTop: 12, fontSize: 16 }}>
-                        1. nice bag * 1
+                        1. Grand Prize:Choose any three products ,free of charge
+                        *1
                         <br />
-                        2. 普通的包包 * 1
+                        2. First Prize:Choose one products ,free of charge *3
                         <br />
-                        3. 100优惠券 * 10
+                        3. Second Prize:$200 discount coupon *10
                         <br />
-                        4. 10元优惠券 * 100
+                        4. Third Prize: $200 discount coupon *50
+                        <br />
+                        5. Lucky Prize: $50 discount coupon *200
                     </div>
                 </div>
             </Modal>

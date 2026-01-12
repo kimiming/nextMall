@@ -33,6 +33,18 @@ export default function RootLayout({
 }) {
     return (
         <html lang="zh">
+            <head>
+                <script
+                    charSet="UTF-8"
+                    id="LA_COLLECT"
+                    src="//sdk.51.la/js-sdk-pro.min.js"
+                ></script>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `LA.init({id:"3OdY7LpTP4HuEPvb",ck:"3OdY7LpTP4HuEPvb"})`,
+                    }}
+                />
+            </head>
             <body>
                 <Provider>
                     <TRPCReactProvider>{children}</TRPCReactProvider>
