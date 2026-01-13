@@ -1,3 +1,5 @@
+// src/app/full/product/page.tsx
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -163,6 +165,8 @@ export default function ProductPage() {
                 whiteSpace="nowrap"
                 style={{
                     scrollbarWidth: 'none', // Firefox
+                    WebkitOverflowScrolling: 'touch', // iOS 平滑滚动
+                    msOverflowStyle: 'none', // IE/Edge (使用驼峰式命名)
                 }}
             >
                 {product?.images?.map((img: string, index: number) => (
@@ -177,6 +181,7 @@ export default function ProductPage() {
                             objectFit: 'cover',
                             cursor: 'pointer',
                             border: '2px solid transparent',
+                            flexShrink: 0,
                         }}
                         _hover={{
                             borderColor: 'blue.500',

@@ -62,7 +62,8 @@ export default function BannerCarousel({
     };
     const onTouchEnd = () => {
         const delta = touchEndX.current - touchStartX.current;
-        if (Math.abs(delta) > 40) {
+        if (Math.abs(delta) > 30) {
+            // 降低滑动阈值，提高灵敏度
             if (delta < 0) {
                 next(); // 左滑
             } else {
@@ -81,6 +82,12 @@ export default function BannerCarousel({
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
+            style={{
+                touchAction: 'pan-x', // 确保可以水平滑动
+                userSelect: 'none', // 防止触摸时选择内容
+                WebkitTapHighlightColor: 'transparent', // 移除点击高亮
+                overflow: 'hidden', // 确保内容不溢出
+            }}
         >
             {!banners || banners.length === 0 ? (
                 <></>
@@ -91,6 +98,11 @@ export default function BannerCarousel({
                         href={banners[index]?.link}
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={{
+                            display: 'block',
+                            width: '100%',
+                            height: '100%',
+                        }}
                     >
                         <Image
                             src={banners[index].image}

@@ -154,7 +154,8 @@ export default function H5Home() {
                             >
                                 <Image
                                     src={entry.icon}
-                                    height={11}
+                                    w={14}
+                                    height={14}
                                     alt={entry.description}
                                 />
                                 <Text fontSize="xs" color="gray.700" truncate>
