@@ -78,7 +78,6 @@ export default function BannerCarousel({
         <Box
             position="relative"
             w="100%"
-            borderRadius="full"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
@@ -109,7 +108,6 @@ export default function BannerCarousel({
                             alt={banners[index]?.description ?? 'banner'}
                             w="100%"
                             h={height}
-                            borderRadius={borderRadius}
                             objectFit="cover"
                             cursor="pointer"
                             transition="opacity 0.4s"
@@ -122,7 +120,6 @@ export default function BannerCarousel({
                         alt={banners[index]?.description ?? 'banner'}
                         w="100%"
                         h={height}
-                        borderRadius={borderRadius}
                         objectFit="cover"
                         cursor="pointer"
                         transition="opacity 0.4s"
