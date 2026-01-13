@@ -340,7 +340,7 @@ export default function ProductPage() {
                     </Text>
                 </Flex> */}
             </Box>
-            <Box pt={4} mb="64px" px={6}>
+            <Box pt={4} mb="64px" px={6} whiteSpace="pre-wrap">
                 {product?.description}
             </Box>
             {/* 底部操作栏 */}
