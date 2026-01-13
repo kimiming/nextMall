@@ -82,7 +82,7 @@ export default function PrizeActivity() {
 
     const handleMyPrizeClick = async () => {
         if (!secret) {
-            message.warning('Please enter the license key first');
+            message.warning('Please enter the your phone number first');
             return;
         }
         const mutation = await getMyPrize.mutateAsync({ phone: secret || '' });
@@ -274,7 +274,7 @@ export default function PrizeActivity() {
                     <span style={{ paddingRight: '10px' }}>
                         <HistoryOutlined />
                     </span>
-                    Ending in:
+                    Ending in :
                     <span
                         style={{
                             fontWeight: 'bold',
@@ -282,6 +282,7 @@ export default function PrizeActivity() {
                             color: '#fff',
                             padding: '5px 10px',
                             borderRadius: 8,
+                            marginLeft: '10px',
                         }}
                     >
                         {countdown}
@@ -309,6 +310,7 @@ export default function PrizeActivity() {
                             padding: '0 5px',
                             color: '#2da884',
                             textDecoration: 'underline',
+                            margin: '0 5px',
                         }}
                         onClick={() => handleViewCount()}
                     >
@@ -367,18 +369,22 @@ export default function PrizeActivity() {
                 centered
             >
                 <div>
-                    <h3>Prize Details</h3>
-                    <div style={{ marginTop: 12, fontSize: 16 }}>
-                        1. Grand Prize:Choose any three products ,free of charge
-                        *1
-                        <br />
-                        2. First Prize:Choose one products ,free of charge *3
-                        <br />
-                        3. Second Prize:$200 discount coupon *10
-                        <br />
-                        4. Third Prize: $200 discount coupon *50
-                        <br />
-                        5. Lucky Prize: $50 discount coupon *200
+                    <h3 style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                        Prize Details
+                    </h3>
+                    <div style={{ marginTop: 12, fontSize: 14 }}>
+                        <div style={{ marginBottom: 12 }}>
+                            1. First : Choose three products,free of charge *1
+                        </div>
+                        <div style={{ marginBottom: 12 }}>
+                            2. Second : Choose one products,free of charge *5
+                        </div>
+                        <div style={{ marginBottom: 12 }}>
+                            3. Third : 50% off coupon *50
+                        </div>
+                        <div style={{ marginBottom: 12 }}>
+                            4. Lucky Prize : 20% off coupon *200
+                        </div>
                     </div>
                 </div>
             </Modal>

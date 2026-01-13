@@ -144,7 +144,7 @@ export const lotteryRouter = createTRPCRouter({
             const record = await ctx.db.lottery.findFirst({
                 where: { phone: input.phone },
             });
-            if (!record) {
+            if (!record.isWinner) {
                 throw new TRPCError({
                     code: 'NOT_FOUND',
                     message: 'no prize',

@@ -20,7 +20,6 @@ import {
 import { FaStar } from 'react-icons/fa';
 import { STORE_GOOD_DATA_KEY, STORE_LAUNCH_INFO_KEY } from '@/app/const';
 import { useSession } from 'next-auth/react';
-import { Modal } from 'antd';
 
 export default function ProductPage() {
     const { data: session } = useSession();
@@ -54,12 +53,17 @@ export default function ProductPage() {
         image: '',
     });
     const [collected, setCollected] = useState(false);
+    const handlerCollect = () => {
+        toggleFavoriteMutation.mutate({ productId: id });
+    };
+    useEffect(() => {
+        if (product?.specs?.[0]) {
+            setSelectedSpec(product.specs[0]);
+            setCollected(product.isFavorited);
+        }
+    }, [product]);
     const [quantity, setQuantity] = useState<number>(1);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-    // 添加大图查看的状态管理
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState('');
 
     const specPrices = product?.specs?.map((spec) => spec.price) ?? [];
     const minPrice = Math.min(...specPrices);
@@ -69,23 +73,6 @@ export default function ProductPage() {
 
     const title = product?.title ?? '';
     const [actionType, setActionType] = useState<'cart' | 'buy' | null>(null);
-
-    const handlerCollect = () => {
-        toggleFavoriteMutation.mutate({ productId: id });
-    };
-
-    // 处理小图点击事件
-    const handleImageClick = (imageUrl: string) => {
-        setSelectedImage(imageUrl);
-        setIsModalOpen(true);
-    };
-
-    useEffect(() => {
-        if (product?.specs?.[0]) {
-            setSelectedSpec(product.specs[0]);
-            setCollected(product.isFavorited);
-        }
-    }, [product]);
 
     const handlerToCart = () => {
         if (!session) {
@@ -150,42 +137,6 @@ export default function ProductPage() {
                 ]}
                 height="380px"
             />
-            <Box
-                px={4}
-                py={3}
-                bg="white"
-                boxShadow="2xs"
-                display="flex"
-                flexDirection="row"
-                gap={2}
-                overflowX="auto"
-                overflowY="hidden"
-                whiteSpace="nowrap"
-                style={{
-                    scrollbarWidth: 'none', // Firefox
-                }}
-            >
-                {product?.images?.map((img: string, index: number) => (
-                    <Image
-                        key={index}
-                        src={img}
-                        alt={title}
-                        style={{
-                            width: '50px',
-                            height: '50px',
-                            borderRadius: '8px',
-                            objectFit: 'cover',
-                            cursor: 'pointer',
-                            border: '2px solid transparent',
-                        }}
-                        _hover={{
-                            borderColor: 'blue.500',
-                            opacity: 0.8,
-                        }}
-                        onClick={() => handleImageClick(img)}
-                    />
-                ))}
-            </Box>
             <Box px={4} py={3} bg="white" boxShadow="2xs">
                 <Flex align="center" justifyContent="space-between" mb={2}>
                     <Text
@@ -196,6 +147,7 @@ export default function ProductPage() {
                     >
                         ${priceRange}
                     </Text>
+                    {/* <Text color="gray.500">已售 {product?.sales ?? 0}</Text> */}
                 </Flex>
                 <Text fontWeight="semibold" fontSize="lg" mb={2}>
                     {title}
@@ -206,6 +158,23 @@ export default function ProductPage() {
                     open={isDrawerOpen}
                     onOpenChange={(e) => setIsDrawerOpen(e.open)}
                 >
+                    {/* <Drawer.Trigger asChild>
+                        <Flex
+                            align="center"
+                            justify="space-between"
+                            cursor="pointer"
+                        >
+                            <Flex align="center">
+                                <Text color="gray.500" mr={2}>
+                                    选择
+                                </Text>
+                                <Text color="gray.800">
+                                    {selectedSpec.value} *{quantity}
+                                </Text>
+                            </Flex>
+                            <FiChevronRight />
+                        </Flex>
+                    </Drawer.Trigger> */}
                     <Portal>
                         <Drawer.Backdrop />
                         <Drawer.Positioner>
@@ -236,6 +205,62 @@ export default function ProductPage() {
                                                 >
                                                     ${selectedSpec.price}
                                                 </Text>
+
+                                                <Flex
+                                                    fontSize="sm"
+                                                    align="center"
+                                                    mt={4}
+                                                    w="100%"
+                                                >
+                                                    <Text
+                                                        fontWeight="normal"
+                                                        color="gray.500"
+                                                        mr={4}
+                                                        mt={1}
+                                                    >
+                                                        库存{' '}
+                                                        {selectedSpec?.stock}
+                                                    </Text>
+                                                    <Flex
+                                                        align="center"
+                                                        bgColor="gray.100"
+                                                        borderRadius="full"
+                                                        px={4}
+                                                    >
+                                                        <IconButton
+                                                            disabled={
+                                                                quantity === 1
+                                                            }
+                                                            variant="ghost"
+                                                            size="2xs"
+                                                            onClick={() => {
+                                                                setQuantity(
+                                                                    quantity - 1
+                                                                );
+                                                            }}
+                                                        >
+                                                            <FiMinus />
+                                                        </IconButton>
+                                                        <Box px={4}>
+                                                            {quantity}
+                                                        </Box>
+                                                        <IconButton
+                                                            disabled={
+                                                                quantity >=
+                                                                selectedSpec.stock
+                                                            }
+                                                            variant="ghost"
+                                                            size="2xs"
+                                                            onClick={() => {
+                                                                setQuantity(
+                                                                    quantity + 1
+                                                                );
+                                                            }}
+                                                        >
+                                                            <FiPlus />
+                                                        </IconButton>
+                                                    </Flex>
+                                                </Flex>
                                             </Box>
                                         </Flex>
                                     </Drawer.Title>
@@ -297,10 +322,81 @@ export default function ProductPage() {
                         </Drawer.Positioner>
                     </Portal>
                 </Drawer.Root>
+
+                {/* <Text color="gray.400" fontSize="sm" mt={1}>
+                    共{product?.specs.length ?? 0}种可选
+                </Text>
+                <Box h="1px" bg="gray.100" my={2} />
+                <Flex align="center">
+                    <Text color="gray.400" mr={2}>
+                        配送
+                    </Text>
+                    <Text mr={2}>{product?.logistics ?? '快递配送'}</Text>
+                    <Text color="gray.400" mr={2}>
+                        快递费用
+                    </Text>
+                    <Text color="red.500">
+                        ￥{product?.logiPrice ?? '快递配送'}
+                    </Text>
+                </Flex> */}
             </Box>
             <Box pt={4} mb="64px" px={6} whiteSpace="pre-wrap">
                 {product?.description}
             </Box>
+            {/* 底部操作栏 */}
+            {/* <Flex
+                position="fixed"
+                left={0}
+                bottom={0}
+                w="100vw"
+                bg="white"
+                boxShadow="0 -2px 8px rgba(0,0,0,0.05)"
+                zIndex={10}
+                h="64px"
+                align="center"
+                px={4}
+            >
+                {collected ? (
+                    <Flex
+                        flex={1}
+                        align="center"
+                        gap={1}
+                        color="red.500"
+                        cursor="pointer"
+                        onClick={() => handlerCollect()}
+                    >
+                        <FaStar />
+                        已收藏
+                    </Flex>
+                ) : (
+                    <Flex
+                        flex={1}
+                        align="center"
+                        gap={1}
+                        cursor="pointer"
+                        onClick={() => handlerCollect()}
+                    >
+                        <FiStar />
+                        收藏
+                    </Flex>
+                )}
+                <Button
+                    colorPalette="yellow"
+                    w={32}
+                    color="white"
+                    borderRadius="24px 0 0 24px"
+                    onClick={() => handlerToCart()}
+                >
+                    加入购物车
+                </Button>
+                <Button
+                    w={32}
+                    borderRadius="0 24px 24px 0"
+                    onClick={() => handlerToBuy()}
+                >
+                    立即购买
+                </Button>
+            </Flex> */}
             {isLoading && (
                 <Box
                     pos="absolute"
@@ -320,27 +416,6 @@ export default function ProductPage() {
                     </Center>
                 </Box>
             )}
-
-            {/* 大图查看Modal */}
-            <Modal
-                open={isModalOpen}
-                onCancel={() => setIsModalOpen(false)}
-                footer={null}
-                width={'100%'}
-                closable={false}
-            >
-                <Box p={0}>
-                    <img
-                        src={selectedImage}
-                        alt={title}
-                        style={{
-                            width: '100%',
-                            height: 'auto',
-                            objectFit: 'contain',
-                        }}
-                    />
-                </Box>
-            </Modal>
         </Box>
     );
 }
