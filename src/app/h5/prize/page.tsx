@@ -253,12 +253,48 @@ export default function PrizeActivity() {
                     bottom: 62,
                     display: 'flex',
                     flexDirection: 'column',
-                    backgroundColor: '#fff',
+
                     margin: '0 auto',
-                    height: '120px',
+                    height: '180px',
                     justifyContent: 'between',
                 }}
             >
+                {/* 活动提醒 */}
+                <div
+                    style={{
+                        background: 'none',
+                        height: '60px',
+                        lineHeight: '60px',
+                        color: '#cc0929ff',
+                        fontSize: 16,
+                        padding: '0 10px',
+                        borderBottom: '1px solid #e5e5e5',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        position: 'relative',
+                    }}
+                >
+                    <div
+                        style={{
+                            display: 'inline-block',
+                            paddingLeft: '100%',
+                            animation: 'marquee 15s linear infinite',
+                        }}
+                    >
+                        New users, please contact customer service to receive a
+                        raffle ticket.Click the green floating window .
+                    </div>
+                    <style jsx>{`
+                        @keyframes marquee {
+                            0% {
+                                transform: translateX(0);
+                            }
+                            100% {
+                                transform: translateX(-100%);
+                            }
+                        }
+                    `}</style>
+                </div>
                 {/* 活动结束倒计时 */}
                 <div
                     style={{
@@ -293,6 +329,7 @@ export default function PrizeActivity() {
                 <div
                     style={{
                         borderTop: '1px solid #e5e5e5',
+                        background: '#fff',
                         height: '60px',
                         lineHeight: '60px',
                         color: '#000',
