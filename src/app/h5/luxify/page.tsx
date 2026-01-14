@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { ContentLoading } from '@/app/_components/LoadingSpinner';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { log } from 'console';
 
 export default function H5Home() {
     // 瀑布流相关状态
@@ -21,6 +20,8 @@ export default function H5Home() {
     // 用于缓存已加载的所有产品（不是阻止请求，而是合并和去重）
     const productCacheRef = useRef<{ [key: number]: any[] }>({});
     const containerRef = useRef<HTMLDivElement>(null);
+    const loadingRef = useRef(false);
+    const hasMoreRef = useRef(true);
     const router = useRouter();
     const { data: bannerResponse, isLoading: bannersLoading } =
         api.banner.list.useQuery({ isActive: true, orderBy: 'sort' });
@@ -52,44 +53,43 @@ export default function H5Home() {
         const allProducts = Object.values(productCacheRef.current).flat();
         setProducts(allProducts);
         // 判断是否还有更多
-        setHasMore(productResponse.data.length === PAGE_SIZE);
+        const hasMore = productResponse.data.length === PAGE_SIZE;
+        setHasMore(hasMore);
+        hasMoreRef.current = hasMore;
+        loadingRef.current = false;
         setLoading(false);
     }, [productResponse, page]);
 
-    // 监听滚动到底部
-    useEffect(() => {
-        const handleScroll = () => {
-            if (!containerRef.current || loading || !hasMore) return;
-            const { scrollTop, scrollHeight, clientHeight } =
-                containerRef.current;
-            if (scrollHeight - scrollTop <= clientHeight + 100) {
-                setLoading(true);
-                setPage((prev) => prev + 1);
-            }
-        };
-        const ref = containerRef.current;
-        ref?.addEventListener('scroll', handleScroll);
-        return () => ref?.removeEventListener('scroll', handleScroll);
-    }, [loading, hasMore, page]);
+    // 监听滚动到底部 - 使用 onScroll 属性直接在 JSX 中处理
+    const handleScroll = (e: any) => {
+        if (loadingRef.current || !hasMoreRef.current) return;
 
-    // 新增：首次加载时自动补充内容，填满容器
+        const { scrollTop, scrollHeight, clientHeight } = e.target;
+        if (scrollHeight - scrollTop <= clientHeight + 100) {
+            loadingRef.current = true;
+            setLoading(true);
+            setPage((prev) => prev + 1);
+        }
+    };
+
+    // 首次加载时自动补充内容，填满容器
     useEffect(() => {
-        // 只有第一页且有更多数据时才自动补充
         if (
             page === 1 &&
-            hasMore &&
-            !loading &&
+            hasMoreRef.current &&
+            !loadingRef.current &&
             containerRef.current &&
             products.length > 0
         ) {
             const ref = containerRef.current;
             // 如果内容高度小于容器高度，且还有更多数据，则自动加载下一页
             if (ref.scrollHeight <= ref.clientHeight + 10) {
+                loadingRef.current = true;
                 setLoading(true);
                 setPage((prev) => prev + 1);
             }
         }
-    }, [products, hasMore, loading, page]);
+    }, [products]);
 
     const isLoading = productLoading;
     if (isLoading && page === 1) {
@@ -105,6 +105,7 @@ export default function H5Home() {
                     'linear-gradient(to bottom,#2da884, #f4f4f4 50%, #f4f4f4 100%)',
             }}
             ref={containerRef}
+            onScroll={handleScroll}
         >
             {/* Search Bar */}
             <Box px={4} pt={4} w="100%">
