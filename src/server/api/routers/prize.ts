@@ -71,6 +71,16 @@ export const lotteryRouter = createTRPCRouter({
                 },
             };
         }),
+    // 3. 获取所有数据（不分页）
+    listAll: publicProcedure.query(async ({ ctx }) => {
+        const data = await ctx.db.lottery.findMany({
+            orderBy: { createdAt: 'desc' },
+        });
+        return {
+            data,
+            total: data.length,
+        };
+    }),
 
     // 3. 修改表格数据
     update: superAdminProcedure

@@ -9,6 +9,7 @@ import {
     HistoryOutlined,
 } from '@ant-design/icons';
 import { api } from '@/trpc/react';
+import { log } from 'console';
 
 // const END_TIME = new Date().getTime() + 1000 * 60 * 60 * 24 * 7; // 活动结束时间，示例为7天con
 const END_TIME = 1768816609533; // 活动结束时间，示例为7天con
@@ -26,7 +27,8 @@ export default function PrizeActivity() {
     const [viewCountVisible, setViewCountVisible] = useState(false);
     const [prizeDetailsVisible, setPrizeDetailsVisible] = useState(false);
 
-    const { data: prizeList } = api.prize.list.useQuery();
+    const { data: prizeList } = api.prize.listAll.useQuery();
+    console.log('prizeList111111', prizeList);
     // console.log('END_TIME', END_TIME);
     // 倒计时逻辑
     useEffect(() => {
