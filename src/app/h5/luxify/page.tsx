@@ -43,7 +43,6 @@ export default function H5Home() {
             pageSize: PAGE_SIZE,
         });
 
-    console.log('products Data:', productResponse);
     // 每次 productResponse 或 page 变化时合并数据
     useEffect(() => {
         if (!productResponse?.data) return;
