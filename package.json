@@ -44,6 +44,7 @@
         "antd": "^6.1.4",
         "bcryptjs": "^3.0.2",
         "china-division": "^2.7.0",
+        "dayjs": "^1.11.19",
         "framer-motion": "^12.24.11",
         "jsonwebtoken": "^9.0.2",
         "next": "^15.5.7",

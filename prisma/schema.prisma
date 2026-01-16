@@ -94,37 +94,53 @@ model VisitLog {
   userAgent String?  // 浏览器UA
   createdAt DateTime @default(now()) // 访问时间
 }
-model Lottery  {
-  id        String   @id @default(cuid()) // 主键
-  phone     String   @unique              // 手机号，唯一
-  secret    String   @unique              // 口令，唯一
-  status    Int      @default(0)          // 抽奖状态 0未抽奖 1已抽奖
-  isWinner  Boolean  @default(false)      // 是否中奖
-  prize     String?   
-  drawAt    DateTime?                      // 抽奖时间
-  winAt     DateTime?                      // 中奖时间
-  createdAt DateTime @default(now())       // 创建时间
+model WsNumber {
+  id         String   @id @default(cuid()) // 主键
+  phone      String   @unique
+  image      String?  // 头像
+  text       String?
+  name       String?
+  createdAt  DateTime @default(now())       // 创建时间 
+}
+model Lottery {
+  id         String   @id @default(cuid()) // 抽奖记录ID
+  phone      String   @unique              // 手机号，唯一
+  secret     String   @unique              // 口令，唯一
+  status     Int      @default(0)          // 抽奖状态 0未抽奖 1已抽奖
+  isWinner   Boolean  @default(false)      // 是否中奖
+  drawAt     DateTime?                     // 抽奖时间
+  winAt      DateTime?                     // 中奖时间
+  createdAt  DateTime @default(now())      // 创建时间
+  // 与Activity的关系
+  activity   Activity @relation("ActivityLotteries", fields: [activityId], references: [id])
+  activityId String   // 活动ID，外键
+  // 与Prize的关系（可选，因为不是所有抽奖都会中奖）
+  prize      Prize?   @relation("PrizeLotteries", fields: [prizeId], references: [id])
+  prizeId    String?  // 奖品ID，外键（可选）
 }
 model Activity {
-  id        String   @id @default(cuid()) // 活动ID
-  name      String   // 活动名称
-  image     String?  // 活动海报
-  text      String?  // 活动内容 
-  startAt   DateTime // 活动开始时间
-  endAt     DateTime // 活动结束时间
-  prizes    Prize[]  // 活动下的奖品
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(cuid()) // 活动ID
+  name      String    // 活动名称
+  image     String?   // 活动海报
+  text      String?   // 活动内容
+  rule      String?   // 活动规则 
+  startAt   DateTime  // 活动开始时间
+  endAt     DateTime  // 活动结束时间
+  prizes    Prize[]   @relation("ActivityPrizes") // 活动下的奖品
+  lotteries Lottery[] @relation("ActivityLotteries") // 活动相关的抽奖
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 model Prize {
-  id         String   @id @default(cuid()) // 奖品ID
-  name       String   // 奖品名称
-  image      String?  // 奖品图片
-  description String? // 奖品描述
-  activity   Activity @relation(fields: [activityId], references: [id]) // 所属活动
+  id         String    @id @default(cuid()) // 奖品ID
+  name       String    // 奖品名称
+  image      String?   // 奖品图片
+  description String?  // 奖品描述
   activityId String    // 活动ID，外键
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  activity   Activity  @relation("ActivityPrizes", fields: [activityId], references: [id])
+  lotteries  Lottery[] @relation("PrizeLotteries") // 获得此奖品的抽奖记录
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 enum UserRole {

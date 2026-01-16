@@ -46,6 +46,24 @@ const Sidebar = () => {
             roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
         },
         {
+            title: 'whatsapp管理',
+            url: '/admin/whatsappManagement',
+            icon: FiSettings,
+            roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
+        },
+        {
+            title: '活动详情',
+            url: '/admin/activityManagement',
+            icon: FiSettings,
+            roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
+        },
+        {
+            title: '我的奖品',
+            url: '/admin/myPrizeManagement',
+            icon: FiBox,
+            roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
+        },
+        {
             title: '抽奖情况',
             url: '/admin/statistics',
             icon: FiBox,

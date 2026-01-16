@@ -16,6 +16,9 @@ import { utilRouter } from '@/server/api/util';
 import { smsRouter } from '@/server/api/routers/sms';
 import { lotteryRouter } from '@/server/api/routers/prize';
 import { visitLogRouter } from '@/server/api/routers/visitLog';
+import { activityManagementRouter } from '@/server/api/routers/ativititymanagement';
+import { myPrizeManagementRouter } from '@/server/api/routers/myPrizeManagement';
+import { whatsappManagementRouter } from '@/server/api/routers/whatsappmanagement';
 
 /**
  * This is the primary router for your server.
@@ -40,6 +43,9 @@ export const appRouter = createTRPCRouter({
     sms: smsRouter,
     prize: lotteryRouter,
     visitLog: visitLogRouter,
+    activity: activityManagementRouter,
+    myPrize: myPrizeManagementRouter,
+    wsNumber: whatsappManagementRouter,
 });
 
 // export type definition of API

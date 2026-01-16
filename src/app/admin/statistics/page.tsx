@@ -11,8 +11,10 @@ import {
     Typography,
     Modal,
     Select,
+    DatePicker,
 } from 'antd';
 import { api } from '@/trpc/react';
+import dayjs from 'dayjs';
 
 export default function Statistics() {
     const [phone, setPhone] = useState('');
@@ -24,8 +26,9 @@ export default function Statistics() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [userId, setUserId] = useState('');
     const [userPrize, setUserPrize] = useState('');
+    const [selectedActivityId, setSelectedActivityId] = useState('');
 
-    //删除用户接口
+    // 删除用户接口
     const deletePrize = api.prize.delete.useMutation({
         onSuccess: () => {
             message.success('删除成功');
@@ -42,6 +45,13 @@ export default function Statistics() {
         page,
         pageSize,
     });
+
+    // 获取所有活动列表
+    const { data: activitiesData } = api.activity.getAllActivities.useQuery();
+
+    // 获取所有奖品列表
+    const { data: prizesData } = api.myPrize.getAllPrizes.useQuery();
+
     useEffect(() => {
         if (prizeList) {
             setDataSource(
@@ -52,11 +62,6 @@ export default function Statistics() {
             );
         }
     }, [prizeList, page, pageSize]);
-
-    const prizeSeries = [
-        { value: '', label: '' },
-        { value: 'ticket', label: '20% Off Coupon as a Prize' },
-    ];
 
     // 表格参数
     const columns = [
@@ -94,23 +99,43 @@ export default function Statistics() {
                     variant="solid"
                     color={isWinner === true ? 'volcano' : 'blue'}
                 >
-                    {isWinner === true ? '已抽' : '未抽'}
+                    {isWinner === true ? '已中奖' : '未中奖'}
                 </Tag>
             ),
         },
         {
             title: '奖品',
-            dataIndex: 'prize',
-            key: 'prize',
-            render: (_, data) => (
+            dataIndex: ['prize', 'name'],
+            key: 'prizeName',
+            render: (prizeName, record) => (
+                <div>{record.prize ? record.prize.name : '-'}</div>
+            ),
+        },
+        {
+            title: '活动',
+            dataIndex: ['activity', 'name'],
+            key: 'activityName',
+            render: (activityName, record) => (
+                <div>{record.activity ? record.activity.name : '-'}</div>
+            ),
+        },
+        {
+            title: '抽奖时间',
+            dataIndex: 'drawAt',
+            key: 'drawAt',
+            render: (drawAt) => (
                 <div>
-                    <Select
-                        style={{ width: '100px' }}
-                        defaultValue={data.prize}
-                        options={prizeSeries}
-                        placeholder="请选择奖品"
-                        onChange={(value) => handleChangePrize(data, value)}
-                    />
+                    {drawAt ? dayjs(drawAt).format('YYYY-MM-DD HH:mm:ss') : '-'}
+                </div>
+            ),
+        },
+        {
+            title: '中奖时间',
+            dataIndex: 'winAt',
+            key: 'winAt',
+            render: (winAt) => (
+                <div>
+                    {winAt ? dayjs(winAt).format('YYYY-MM-DD HH:mm:ss') : '-'}
                 </div>
             ),
         },
@@ -118,7 +143,9 @@ export default function Statistics() {
             title: '参与时间',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            render: (createdAt: string) => new Date(createdAt).toLocaleString(),
+            render: (createdAt) => (
+                <div>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+            ),
         },
         {
             title: '操作',
@@ -129,37 +156,18 @@ export default function Statistics() {
                     <Button
                         type="primary"
                         style={{ marginRight: 10 }}
-                        onClick={() => handleUserEdit()}
+                        onClick={() => handleUserEdit(data)}
                     >
                         编辑
                     </Button>
-                    <Modal
-                        title="编辑用户"
-                        closable={{ 'aria-label': 'Custom Close Button' }}
-                        mask={{ enabled: false, blur: true }}
-                        open={isEditModalOpen}
-                        okText="确认"
-                        cancelText="取消"
-                        onOk={handleEditOk}
-                        onCancel={handleEditCancel}
-                    ></Modal>
                     <Button danger onClick={() => handleUserDelete(data)}>
                         删除
                     </Button>
-                    <Modal
-                        title="确认删除吗？"
-                        closable={{ 'aria-label': 'Custom Close Button' }}
-                        mask={{ enabled: false, blur: true }}
-                        open={isModalOpen}
-                        okText="确认删除"
-                        cancelText="取消"
-                        onOk={handleDeleteOk}
-                        onCancel={handleCancel}
-                    ></Modal>
                 </div>
             ),
         },
     ];
+
     // 报名接口
     const createPrize = api.prize.create.useMutation({
         onSuccess: () => {
@@ -169,7 +177,7 @@ export default function Statistics() {
         },
     });
 
-    //更新用户信息接口
+    // 更新用户信息接口
     const updateUser = api.prize.update.useMutation({
         onSuccess: () => {
             message.success('更新成功');
@@ -177,70 +185,112 @@ export default function Statistics() {
         },
     });
 
-    // 奖品选择处理
-    const handleChangePrize = (data, value) => {
-        let idUser = data.id;
-        setUserPrize(value);
-        setUserId(idUser);
-        console.log(data);
-    };
-
     // 提交报名
     const handleSubmit = async () => {
         if (!phone) {
             message.warning('请输入手机号');
             return;
         }
-        const mutation = await createPrize.mutateAsync({ phone });
+
+        // 默认选择第一个活动，如果没有活动则提示
+        if (!activitiesData || activitiesData.data.length === 0) {
+            message.error('没有可用的活动，请先创建活动');
+            return;
+        }
+
+        const defaultActivityId = activitiesData.data[0].id;
+
+        try {
+            await createPrize.mutateAsync({
+                phone,
+                activityId: defaultActivityId,
+            });
+        } catch (error) {
+            console.error('报名失败:', error);
+            message.error('报名失败');
+        }
     };
+
     // 分页处理
     const handleTableChange = (pagination) => {
         setPage(pagination.current);
         setPageSize(pagination.pageSize);
     };
+
     const showModal = () => {
         setIsModalOpen(true);
     };
-    //确定删除用户
+
+    // 确定删除用户
     const handleDeleteOk = async () => {
-        let res = await deletePrize.mutateAsync({ id: userId });
-        if (res) {
+        try {
+            await deletePrize.mutateAsync({ id: userId });
             setIsModalOpen(false);
+        } catch (error) {
+            console.error('删除失败:', error);
+            message.error('删除失败');
         }
     };
+
     const handleCancel = () => {
         setIsModalOpen(false);
     };
 
-    //删除按钮
+    // 删除按钮
     const handleUserDelete = (value) => {
         setUserId(value?.id);
         showModal();
     };
 
-    //编辑用户
-    const handleUserEdit = async () => {
-        console.log('value:', userPrize);
-        console.log('id:', userId);
+    // 编辑用户
+    const handleUserEdit = async (value) => {
+        setUserId(value?.id);
+        setEditRecord(value);
+        setIsEditModalOpen(true);
+    };
 
-        await updateUser.mutateAsync({
-            id: userId,
-            prize: userPrize,
-            isWinner: true,
-        });
+    // 编辑记录
+    const [editRecord, setEditRecord] = useState<any>(null);
+
+    // 处理编辑表单提交
+    const handleEditSubmit = async () => {
+        try {
+            await updateUser.mutateAsync({
+                id: editRecord.id,
+                isWinner: editRecord.isWinner,
+                prizeId: editRecord.prizeId || null,
+                activityId: editRecord.activityId,
+                drawAt: editRecord.drawAt || null,
+                winAt: editRecord.winAt || null,
+            });
+
+            setIsEditModalOpen(false);
+            setEditRecord(null);
+        } catch (error) {
+            console.error('更新失败:', error);
+            message.error('更新失败');
+        }
     };
 
     // 编辑用户确认
     const handleEditOk = async () => {
-        // let res = await editPrize.mutateAsync({ id: userId, phone });
-        // if (res) {
-        //     setIsModalOpen(false);
-        // }
+        handleEditSubmit();
     };
+
     // 编辑用户取消
     const handleEditCancel = () => {
         setIsEditModalOpen(false);
+        setEditRecord(null);
     };
+
+    // 处理编辑记录字段更改
+    const handleFieldChange = (field, value) => {
+        setEditRecord((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
+
     return (
         <div
             style={{
@@ -284,6 +334,178 @@ export default function Statistics() {
                     onChange={handleTableChange}
                 />
             </div>
+
+            {/* 编辑用户弹窗 */}
+            <Modal
+                title="编辑用户"
+                open={isEditModalOpen}
+                okText="确认"
+                cancelText="取消"
+                onOk={handleEditOk}
+                onCancel={handleEditCancel}
+            >
+                {editRecord && (
+                    <div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label
+                                style={{ display: 'inline-block', width: 80 }}
+                            >
+                                手机号:
+                            </label>
+                            <span>{editRecord.phone}</span>
+                        </div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label
+                                style={{ display: 'inline-block', width: 80 }}
+                            >
+                                秘钥:
+                            </label>
+                            <span>{editRecord.secret}</span>
+                        </div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label
+                                style={{ display: 'inline-block', width: 80 }}
+                            >
+                                状态:
+                            </label>
+                            <Select
+                                style={{ width: 120 }}
+                                value={editRecord.status}
+                                onChange={(value) =>
+                                    handleFieldChange('status', value)
+                                }
+                            >
+                                <Select.Option value={0}>未抽奖</Select.Option>
+                                <Select.Option value={1}>已抽奖</Select.Option>
+                            </Select>
+                        </div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label
+                                style={{ display: 'inline-block', width: 80 }}
+                            >
+                                是否中奖:
+                            </label>
+                            <Select
+                                style={{ width: 120 }}
+                                value={editRecord.isWinner}
+                                onChange={(value) =>
+                                    handleFieldChange('isWinner', value)
+                                }
+                            >
+                                <Select.Option value={false}>
+                                    未中奖
+                                </Select.Option>
+                                <Select.Option value={true}>中奖</Select.Option>
+                            </Select>
+                        </div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label
+                                style={{ display: 'inline-block', width: 80 }}
+                            >
+                                奖品:
+                            </label>
+                            <Select
+                                style={{ width: 200 }}
+                                value={editRecord.prizeId || undefined}
+                                onChange={(value) =>
+                                    handleFieldChange('prizeId', value)
+                                }
+                                placeholder="选择奖品"
+                                allowClear
+                            >
+                                {prizesData?.data.map((prize) => (
+                                    <Select.Option
+                                        key={prize.id}
+                                        value={prize.id}
+                                    >
+                                        {prize.name}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label
+                                style={{ display: 'inline-block', width: 80 }}
+                            >
+                                活动:
+                            </label>
+                            <Select
+                                style={{ width: 200 }}
+                                value={editRecord.activityId}
+                                onChange={(value) =>
+                                    handleFieldChange('activityId', value)
+                                }
+                                placeholder="选择活动"
+                            >
+                                {activitiesData?.data.map((activity) => (
+                                    <Select.Option
+                                        key={activity.id}
+                                        value={activity.id}
+                                    >
+                                        {activity.name}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label
+                                style={{ display: 'inline-block', width: 80 }}
+                            >
+                                抽奖时间:
+                            </label>
+                            <DatePicker
+                                showTime
+                                value={
+                                    editRecord.drawAt
+                                        ? dayjs(editRecord.drawAt)
+                                        : null
+                                }
+                                onChange={(date) =>
+                                    handleFieldChange(
+                                        'drawAt',
+                                        date?.toDate() || null
+                                    )
+                                }
+                                style={{ width: 200 }}
+                            />
+                        </div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label
+                                style={{ display: 'inline-block', width: 80 }}
+                            >
+                                中奖时间:
+                            </label>
+                            <DatePicker
+                                showTime
+                                value={
+                                    editRecord.winAt
+                                        ? dayjs(editRecord.winAt)
+                                        : null
+                                }
+                                onChange={(date) =>
+                                    handleFieldChange(
+                                        'winAt',
+                                        date?.toDate() || null
+                                    )
+                                }
+                                style={{ width: 200 }}
+                            />
+                        </div>
+                    </div>
+                )}
+            </Modal>
+
+            {/* 删除确认弹窗 */}
+            <Modal
+                title="确认删除吗？"
+                open={isModalOpen}
+                okText="确认删除"
+                cancelText="取消"
+                onOk={handleDeleteOk}
+                onCancel={handleCancel}
+            >
+                <p>此操作不可撤销，确定要删除这条记录吗？</p>
+            </Modal>
         </div>
     );
 }
