@@ -112,8 +112,8 @@ model Lottery {
   winAt      DateTime?                     // 中奖时间
   createdAt  DateTime @default(now())      // 创建时间
   // 与Activity的关系
-  activity   Activity @relation("ActivityLotteries", fields: [activityId], references: [id])
-  activityId String   // 活动ID，外键
+  activity   Activity? @relation("ActivityLotteries", fields: [activityId], references: [id])
+  activityId String?   // 活动ID，外键
   // 与Prize的关系（可选，因为不是所有抽奖都会中奖）
   prize      Prize?   @relation("PrizeLotteries", fields: [prizeId], references: [id])
   prizeId    String?  // 奖品ID，外键（可选）
@@ -136,8 +136,8 @@ model Prize {
   name       String    // 奖品名称
   image      String?   // 奖品图片
   description String?  // 奖品描述
-  activityId String    // 活动ID，外键
-  activity   Activity  @relation("ActivityPrizes", fields: [activityId], references: [id])
+  activityId String?    // 活动ID，外键
+  activity   Activity?  @relation("ActivityPrizes", fields: [activityId], references: [id])
   lotteries  Lottery[] @relation("PrizeLotteries") // 获得此奖品的抽奖记录
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
