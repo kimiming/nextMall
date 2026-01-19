@@ -554,7 +554,7 @@ export default function PrizeActivity() {
                     </Modal>
                 </div>
             ) : (
-                <div>活动未开始</div>
+                <div>活动未开始,请稍后再试</div>
             )}
         </>
     );
