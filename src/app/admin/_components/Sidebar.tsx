@@ -17,6 +17,9 @@ import {
     FiShoppingBag,
     FiFileText,
     FiBarChart,
+    FiGift,
+    FiCalendar,
+    FiPhone,
 } from 'react-icons/fi';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -48,19 +51,19 @@ const Sidebar = () => {
         {
             title: 'whatsapp管理',
             url: '/admin/whatsappManagement',
-            icon: FiSettings,
+            icon: FiPhone,
             roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
         },
         {
             title: '活动详情',
             url: '/admin/activityManagement',
-            icon: FiSettings,
+            icon: FiCalendar,
             roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
         },
         {
             title: '我的奖品',
             url: '/admin/myPrizeManagement',
-            icon: FiBox,
+            icon: FiGift,
             roles: [ROLES.SUPERADMIN], // 所有管理员都能看到
         },
         {
