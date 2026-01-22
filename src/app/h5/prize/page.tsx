@@ -11,6 +11,26 @@ import {
 import { api } from '@/trpc/react';
 import dayjs from 'dayjs';
 
+//帮我用ts定义一个接口Prize
+{
+    /***name?: string;
+        id?: string;
+        createdAt?: string;
+        updatedAt?: string;
+        image?: string | null;
+        description?: string | null;
+        activityId?: string;***/
+}
+interface Prize {
+    id?: string;
+    name?: string;
+    image?: string;
+    description?: string;
+    activityId?: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
 // const END_TIME = new Date().getTime() + 1000 * 60 * 60 * 24 * 7; // 活动结束时间，示例为7天con
 const DEFAULT_END_TIME = 1768816609533; // 活动结束时间，示例为7天con
 
@@ -18,7 +38,7 @@ export default function PrizeActivity() {
     const [secret, setSecret] = useState('');
     const [phone, setPhone] = useState();
     const [prizeVisible, setPrizeVisible] = useState(false);
-    const [prize, setPrize] = useState('');
+    const [prize, setPrize] = useState<Prize>({} as Prize);
     const [ruleVisible, setRuleVisible] = useState(false);
     const [myPrizeVisible, setMyPrizeVisible] = useState(false);
     const [countdown, setCountdown] = useState('');
@@ -34,9 +54,7 @@ export default function PrizeActivity() {
     const activityInfo = activity?.data?.[0];
     const END_TIME = dayjs(activityInfo?.endAt).valueOf();
     const rule = activityInfo?.rule || '';
-    const jiangxiang = activityInfo?.text || '';
-    // console.log('activityInfo1', activityInfo);
-    // console.log('END_TIME', END_TIME);
+    const prizeDetails = activityInfo?.text || '';
     // 倒计时逻辑
     // 倒计时逻辑 - 修改为依赖于活动数据
     useEffect(() => {
@@ -128,13 +146,12 @@ export default function PrizeActivity() {
             // 使用refetch手动触发查询
             const result = await myPrizeQuery.refetch();
             if (result.data) {
-                setPrize(result.data.prize.name || 'No prize found');
+                setPrize(result.data.prize || {});
                 setMyPrizeVisible(true);
             } else {
                 message.info('No prize found for this phone number');
             }
         } catch (error) {
-            console.error('Error fetching prize:', error);
             message.error('Failed to fetch prize information');
         }
     };
@@ -158,7 +175,6 @@ export default function PrizeActivity() {
     }
     return (
         <>
-            {' '}
             {isHaveActivity ? (
                 <div
                     style={{
@@ -419,11 +435,11 @@ export default function PrizeActivity() {
                         <div style={{ textAlign: 'center' }}>
                             <h3>Congratulations!</h3>
                             <div style={{ fontSize: 20, margin: '16px 0' }}>
-                                {prize}
+                                {prize?.name || 'No prize found'}
                             </div>
                             <img
-                                src="/images/iphone12.png"
-                                alt="iPhone12"
+                                src={prize?.image || ''}
+                                alt="prize"
                                 style={{ width: 120 }}
                             />
                         </div>
@@ -480,21 +496,7 @@ export default function PrizeActivity() {
                                     whiteSpace: 'pre-wrap',
                                 }}
                             >
-                                {jiangxiang}
-                                {/* <div style={{ marginBottom: 12 }}>
-                                    1. First : Choose three products,free of
-                                    charge *1
-                                </div>
-                                <div style={{ marginBottom: 12 }}>
-                                    2. Second : Choose one products,free of
-                                    charge *5
-                                </div>
-                                <div style={{ marginBottom: 12 }}>
-                                    3. Third : 50% off coupon *50
-                                </div>
-                                <div style={{ marginBottom: 12 }}>
-                                    4. Lucky Prize : 20% off coupon *200
-                                </div> */}
+                                {prizeDetails}
                             </div>
                         </div>
                     </Modal>
@@ -507,17 +509,35 @@ export default function PrizeActivity() {
                         centered
                     >
                         <div style={{ textAlign: 'center' }}>
-                            <h3>My Prizes</h3>
-                            <div style={{ fontSize: 20, margin: '16px 0' }}>
-                                {prize ? prize : 'No prizes yet'}
+                            <div style={{ fontWeight: 'bold', fontSize: 22 }}>
+                                My Prizes
                             </div>
-                            {/* {prize && (
-                        <img
-                            src="/images/iphone12.png"
-                            alt="iPhone12"
-                            style={{ width: 120 }}
-                        />
-                    )} */}
+                            <div style={{ fontSize: 20, margin: '16px 0' }}>
+                                {prize?.name || 'No prizes yet'}
+                            </div>
+                            {prize && (
+                                <div
+                                    style={{
+                                        textAlign: 'center',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        flexDirection: 'column',
+                                    }}
+                                >
+                                    <img
+                                        src={prize?.image || ''}
+                                        alt={prize?.name || 'prize'}
+                                        style={{
+                                            width: 120,
+                                        }}
+                                    />
+                                    <p style={{ fontSize: 14, marginTop: 8 }}>
+                                        {prize?.description ||
+                                            'No prize details yet'}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </Modal>
                     {/* 中奖人数弹窗 */}
@@ -554,7 +574,23 @@ export default function PrizeActivity() {
                     </Modal>
                 </div>
             ) : (
-                <div>活动未开始,请稍后再试</div>
+                <div
+                    style={{
+                        height: '100vh',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        //背景渐变
+                        background:
+                            'linear-gradient(rgb(45, 168, 132), rgb(244, 244, 244) 50%, rgba(45, 168, 132) 100%)',
+                    }}
+                >
+                    <p>The event has not started yet;</p>
+                    <p>please try again later.</p>
+                </div>
             )}
         </>
     );
