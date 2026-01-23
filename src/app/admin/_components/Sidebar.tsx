@@ -20,6 +20,7 @@ import {
     FiGift,
     FiCalendar,
     FiPhone,
+    FiVideo,
 } from 'react-icons/fi';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -97,15 +98,15 @@ const Sidebar = () => {
             roles: [ROLES.SUPERADMIN], // 只有超级管理员能看到
         },
         {
-            title: '课程分类',
+            title: '视频分类',
             url: '/admin/video/collection',
             icon: FiActivity,
             roles: [ROLES.SUPERADMIN], // 只有超级管理员能看到
         },
         {
-            title: '课程管理',
+            title: '视频管理',
             url: '/admin/video/course',
-            icon: FiDollarSign,
+            icon: FiVideo,
             roles: [ROLES.SUPERADMIN], // 只有超级管理员能看到
         },
         {

@@ -348,7 +348,7 @@ export default function AdminPage() {
                 alignItems="center"
                 mb={4}
             >
-                <Heading size="lg">课程管理</Heading>
+                <Heading size="lg">视频管理</Heading>
             </Box>
             <DataTable
                 columns={columns.map((col) =>
