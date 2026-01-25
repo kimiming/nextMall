@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import styles from './page.module.css';
 
@@ -25,6 +27,33 @@ export default function Info() {
                         }}
                         sizes="(max-width: 640px) 90vw, (max-width: 768px) 80vw, 60vw"
                     />
+                </div>
+            </div>
+            {/* 视频区域 */}
+            <div className={styles.videoArea}>
+                <div className={styles.videoWrapper}>
+                    <div className={styles.videoPlayer}>
+                        <div className={styles.videoTitle}>中文安装教程1</div>
+                        <video width="600" controls>
+                            <source src="/教程1.mp4" type="video/mp4" />
+                            您的浏览器不支持视频播放。
+                        </video>
+                        {/* <div>
+                            <Button onClick={handlePlay}>播放</Button>
+                            <Button onClick={handlePause}>暂停</Button>
+                        </div> */}
+                    </div>
+                    <div className={styles.videoPlayer}>
+                        <div className={styles.videoTitle}>中文安装教程2</div>
+                        <video width="600" controls>
+                            <source src="/教程2.mp4" type="video/mp4" />
+                            您的浏览器不支持视频播放。
+                        </video>
+                        {/* <div>
+                            <Button onClick={handlePlay}>播放</Button>
+                            <Button onClick={handlePause}>暂停</Button>
+                        </div> */}
+                    </div>
                 </div>
             </div>
 
